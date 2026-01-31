@@ -196,22 +196,29 @@ body.mobile {
 /* ======================
    CONFIGURAÇÕES
 ====================== */
-.config-bloco button {
-  width: 100%;
-  margin-top: 8px;
-  padding: 10px;
-  font-size: 14px;
-  display: block;
+.config-bloco {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.foto-config {
-  width: 90px;
-  height: 90px;
-  border-radius: 50%;
-  border: 3px solid #A78BFA;
-  object-fit: cover;
-  display: block;
-  margin-bottom: 12px;
+.config-bloco button {
+  width: 100%;
+  padding: 12px;
+  background: #A78BFA;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.config-bloco button:last-child {
+  background: #ef4444;
+}
+
+.config-bloco button:active {
+  opacity: 0.85;
 }
 
 /* ======================
@@ -255,4 +262,5 @@ body.mobile {
   cursor: pointer;
   font-size: 20px;
 }
+
 

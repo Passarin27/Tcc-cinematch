@@ -10,7 +10,7 @@ html, body {
   margin: 0;
   padding: 0;
   width: 100%;
-  overflow-x: hidden; /* evita tela estourar */
+  overflow-x: hidden; 
   background: #0f172a;
   color: #E5E7EB;
 }
@@ -58,7 +58,7 @@ a {
    MOBILE BASE
 ====================== */
 body.mobile {
-  padding-bottom: 72px; /* espaço da bottom-nav */
+  padding-bottom: 72px; 
 }
 
 /* ======================
@@ -115,7 +115,7 @@ body.mobile {
   gap: 12px;
   padding: 12px;
   border-bottom: 1px solid #1e293b;
-  position: relative; /* ancora o coração */
+  position: relative;
 }
 
 .filme-card img {
@@ -273,6 +273,7 @@ body.mobile {
   cursor: pointer;
   font-size: 20px;
 }
+
 
 
 

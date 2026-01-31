@@ -110,7 +110,14 @@ async function editarSenha() {
 /* =========================
    FOTO 
 ========================= */
+
+
 const fotoInput = document.getElementById("fotoInput");
+const fotoPerfil = document.getElementById("fotoPerfil");
+
+function editarFoto() {
+  fotoInput.click();
+}
 
 fotoInput.addEventListener("change", async (e) => {
   const file = e.target.files[0];
@@ -134,17 +141,13 @@ fotoInput.addEventListener("change", async (e) => {
     if (!res.ok) throw new Error("Erro ao enviar foto");
 
     const data = await res.json();
-    document.getElementById("fotoPerfil").src = data.foto;
+    fotoPerfil.src = data.foto;
 
   } catch (err) {
     alert("Erro ao subir imagem");
     console.error(err);
   }
 });
-
-window.editarFoto = function () {
-  document.getElementById("fotoInput").click();
-};
 
 async function removerFoto() {
   const confirmar = confirm("Deseja remover sua foto?");
@@ -165,7 +168,7 @@ async function removerFoto() {
     return;
   }
 
-  document.getElementById("fotoPerfil").src = "./avatar.png";
+  fotoPerfil.src = "./avatar.png";
 }
 
 /* =========================
@@ -175,6 +178,7 @@ function logout() {
   localStorage.removeItem("token");
   window.location.href = "index.html";
 }
+
 
 
 

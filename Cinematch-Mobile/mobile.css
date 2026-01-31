@@ -146,7 +146,7 @@ body.mobile {
 }
 
 /* ======================
-   CORAÇÃO (ÚNICO, SEM BUG)
+   CORAÇÃO 
 ====================== */
 .coracao {
   position: absolute;
@@ -196,12 +196,12 @@ body.mobile {
 /* ======================
    CONFIGURAÇÕES
 ====================== */
-.config-bloco {
-  background: rgba(20, 20, 35, 0.95);
-  padding: 20px;
-  border-radius: 12px;
-  margin-bottom: 20px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+.config-bloco button {
+  width: 100%;
+  margin-top: 8px;
+  padding: 10px;
+  font-size: 14px;
+  display: block;
 }
 
 .foto-config {
@@ -255,3 +255,4 @@ body.mobile {
   cursor: pointer;
   font-size: 20px;
 }
+

@@ -1,5 +1,5 @@
 /* ======================
-   RESET GLOBAL
+   RESET BÁSICO 
 ====================== */
 * {
   box-sizing: border-box;
@@ -9,14 +9,12 @@
 html, body {
   margin: 0;
   padding: 0;
-  width: 100%;
-  overflow-x: hidden;
   background: #0f172a;
   color: #E5E7EB;
 }
 
 /* ======================
-   AUTH (LOGIN / CADASTRO)
+   AUTH
 ====================== */
 body.auth {
   min-height: 100vh;
@@ -26,32 +24,14 @@ body.auth {
   padding: 24px;
 }
 
+body.auth input,
+body.auth button {
+  width: 100%;
+}
+
 h1 {
   text-align: center;
   margin-bottom: 24px;
-}
-
-input {
-  width: 100%;
-  margin-bottom: 12px;
-  padding: 14px;
-  border-radius: 8px;
-  border: none;
-}
-
-button {
-  padding: 14px;
-  border-radius: 8px;
-  border: none;
-  background: #6366f1;
-  color: white;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-a {
-  color: #93c5fd;
-  text-decoration: none;
 }
 
 /* ======================
@@ -125,21 +105,16 @@ body.mobile {
 
 .filme-info h3 {
   font-size: 16px;
-  font-weight: 700;
   margin: 0 0 4px;
 }
 
 .filme-info small {
   font-size: 13px;
-  font-weight: 600;
   color: #a5b4fc;
-  display: block;
 }
 
 .sinopse {
   font-size: 14px;
-  line-height: 1.5;
-  margin-top: 6px;
   max-height: 4.5em;
   overflow: hidden;
 }
@@ -174,8 +149,8 @@ body.mobile {
 .bottom-nav button {
   flex: 1;
   padding: 16px;
-  border: none;
   background: none;
+  border: none;
   color: white;
   font-size: 18px;
 }
@@ -185,10 +160,9 @@ body.mobile {
 }
 
 /* ======================
-   CONTEÚDO PADRÃO
+   CONTEÚDO
 ====================== */
 #conteudo {
-  width: 100%;
   padding: 16px;
 }
 
@@ -196,74 +170,41 @@ body.mobile {
    CONFIGURAÇÕES 
 ====================== */
 .config-bloco {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
 }
 
-.config-bloco:first-of-type {
-  align-items: flex-start;
-}
-
-.config-bloco .foto-config {
+/* FOTO */
+.foto-config {
   width: 90px;
   height: 90px;
   border-radius: 50%;
   border: 3px solid #A78BFA;
   object-fit: cover;
+  display: block;
+  margin-bottom: 8px;
 }
 
-.config-bloco:first-of-type button {
-  width: auto;
-  flex: 1;
-}
-
-.config-bloco:first-of-type {
-  gap: 8px;
-}
-.config-bloco:first-of-type button {
-  display: inline-block;
-}
-/* ======================
-   MODAL
-====================== */
-.modal {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.7);
-  align-items: center;
-  justify-content: center;
-  z-index: 999;
-}
-
-.modal.ativo {
-  display: flex;
-}
-
-.modal-conteudo {
-  background: #111827;
-  padding: 24px;
-  width: 90%;
-  max-width: 320px;
-  border-radius: 12px;
-  position: relative;
-}
-
-.modal input {
+/* BOTÕES CONFIG */
+.config-bloco button {
   width: 100%;
   padding: 10px;
-  margin-bottom: 12px;
-  border-radius: 6px;
+  margin-top: 6px;
+  font-size: 14px;
+  border-radius: 8px;
   border: none;
-}
-
-.fechar {
-  position: absolute;
-  top: 10px;
-  right: 12px;
   cursor: pointer;
-  font-size: 20px;
+  background: #6366f1;
+  color: white;
 }
 
+.config-bloco button.remover {
+  background: #334155;
+}
+
+/* ======================
+   LINKS
+====================== */
+a {
+  color: #93c5fd;
+  text-decoration: none;
+}

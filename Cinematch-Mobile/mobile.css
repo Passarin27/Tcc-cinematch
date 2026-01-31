@@ -202,6 +202,9 @@ body.mobile {
   margin-bottom: 16px;
 }
 
+.config-bloco:first-of-type {
+  align-items: flex-start;
+}
 
 .config-bloco .foto-config {
   width: 90px;
@@ -209,31 +212,19 @@ body.mobile {
   border-radius: 50%;
   border: 3px solid #A78BFA;
   object-fit: cover;
-  margin-bottom: 8px;
 }
 
-
-.config-bloco > button {
-  width: 100%;
-  padding: 10px;
-  font-size: 14px;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
+.config-bloco:first-of-type button {
+  width: auto;
+  flex: 1;
 }
 
-
-.config-bloco > button:nth-of-type(1) {
-  background: #6366f1;
-  color: #fff;
+.config-bloco:first-of-type {
+  gap: 8px;
 }
-
-
-.config-bloco > button:nth-of-type(2) {
-  background: #ef4444;
-  color: #fff;
+.config-bloco:first-of-type button {
+  display: inline-block;
 }
-
 /* ======================
    MODAL
 ====================== */
@@ -275,3 +266,4 @@ body.mobile {
   cursor: pointer;
   font-size: 20px;
 }
+

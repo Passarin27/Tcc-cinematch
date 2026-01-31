@@ -74,11 +74,7 @@ router.post(
       return res.status(500).json({ error: uploadError.message });
     }
 
-    const { data } = supabase.storage
-      .from('Avatares')
-      .getPublicUrl(fileName);
-
-    const fotoUrl = data.publicUrl;
+    const fotoUrl = `${process.env.SUPABASE_URL}/storage/v1/object/public/Avatares/${fileName}?t=${Date.now()}`;
 
     await supabase
       .from('usuarios')
@@ -88,6 +84,7 @@ router.post(
     res.json({ foto: fotoUrl });
   }
 );
+
 /* =========================
    DELETE /users/me/avatar
 ========================= */
@@ -108,4 +105,5 @@ router.delete('/me/avatar', authMiddleware, async (req, res) => {
 
 
 module.exports = router;
+
 

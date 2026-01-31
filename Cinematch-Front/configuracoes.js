@@ -140,7 +140,7 @@ document.getElementById("fotoInput").addEventListener("change", async (e) => {
   const fileName = `${usuario.id}.png`;
 
   const { error } = await supabaseClient.storage
-    .from("avatares")
+    .from("Avatares")
     .upload(fileName, file, { upsert: true });
 
   if (error) {
@@ -149,7 +149,7 @@ document.getElementById("fotoInput").addEventListener("change", async (e) => {
   }
 
   const { data } = supabaseClient.storage
-    .from("avatares")
+    .from("Avatares")
     .getPublicUrl(fileName);
 
   const fotoUrl = data.publicUrl;
@@ -158,4 +158,5 @@ document.getElementById("fotoInput").addEventListener("change", async (e) => {
 
   document.getElementById("fotoPerfil").src = fotoUrl;
 });
+
 

@@ -10,7 +10,7 @@ html, body {
   margin: 0;
   padding: 0;
   width: 100%;
-  overflow-x: hidden; 
+  overflow-x: hidden;
   background: #0f172a;
   color: #E5E7EB;
 }
@@ -26,12 +26,12 @@ body.auth {
   padding: 24px;
 }
 
-h1 {
+body.auth h1 {
   text-align: center;
   margin-bottom: 24px;
 }
 
-input {
+body.auth input {
   width: 100%;
   margin-bottom: 12px;
   padding: 14px;
@@ -39,7 +39,7 @@ input {
   border: none;
 }
 
-button {
+body.auth button {
   padding: 14px;
   border-radius: 8px;
   border: none;
@@ -58,7 +58,7 @@ a {
    MOBILE BASE
 ====================== */
 body.mobile {
-  padding-bottom: 72px; 
+  padding-bottom: 72px;
 }
 
 /* ======================
@@ -86,28 +86,6 @@ body.mobile {
 }
 
 /* ======================
-   TABS
-====================== */
-.tabs {
-  display: flex;
-  padding: 8px;
-  gap: 8px;
-}
-
-.tab {
-  flex: 1;
-  padding: 10px;
-  border-radius: 20px;
-  background: #1e293b;
-  color: white;
-  border: none;
-}
-
-.tab.ativo {
-  background: #6366f1;
-}
-
-/* ======================
    LISTA DE FILMES
 ====================== */
 .filme-card {
@@ -121,44 +99,6 @@ body.mobile {
 .filme-card img {
   width: 80px;
   border-radius: 8px;
-}
-
-.filme-info h3 {
-  font-size: 16px;
-  font-weight: 700;
-  margin: 0 0 4px;
-}
-
-.filme-info small {
-  font-size: 13px;
-  font-weight: 600;
-  color: #a5b4fc;
-  display: block;
-}
-
-.sinopse {
-  font-size: 14px;
-  line-height: 1.5;
-  margin-top: 6px;
-
-  max-height: 4.5em;
-  overflow: hidden;
-}
-
-/* ======================
-   CORAÇÃO 
-====================== */
-.coracao {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  font-size: 20px;
-  cursor: pointer;
-  color: #64748b;
-}
-
-.coracao.ativo {
-  color: #EF4444;
 }
 
 /* ======================
@@ -194,24 +134,25 @@ body.mobile {
 }
 
 /* ======================
-   CONFIGURAÇÕES
+   CONFIGURAÇÕES (ISOLADO)
 ====================== */
 .config-bloco {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  margin-bottom: 16px;
+  gap: 10px;
+  margin-bottom: 20px;
 }
 
-.config-bloco img.foto-config {
+/* FOTO PERFIL */
+.config-bloco .foto-config {
   width: 90px;
   height: 90px;
   border-radius: 50%;
   border: 3px solid #A78BFA;
   object-fit: cover;
-  align-self: flex-start;
 }
 
+/* BOTÕES CONFIG */
 .config-bloco button {
   width: 100%;
   padding: 10px;
@@ -221,15 +162,16 @@ body.mobile {
   cursor: pointer;
 }
 
+/* Alterar foto */
 .config-bloco button:nth-of-type(1) {
   background: #6366f1;
   color: #fff;
 }
 
-
+/* Remover foto */
 .config-bloco button:nth-of-type(2) {
-  background: #334155;
-  color: #e5e7eb;
+  background: #ef4444;
+  color: #fff;
 }
 
 /* ======================
@@ -273,7 +215,3 @@ body.mobile {
   cursor: pointer;
   font-size: 20px;
 }
-
-
-
-

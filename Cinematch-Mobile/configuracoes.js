@@ -108,7 +108,7 @@ async function editarSenha() {
 }
 
 /* =========================
-   FOTO (UPLOAD + BACKEND)
+   FOTO 
 ========================= */
 const fotoInput = document.getElementById("fotoInput");
 
@@ -120,7 +120,7 @@ fotoInput.addEventListener("change", async () => {
   formData.append("file", file);
 
   try {
-    const uploadRes = await fetch("https://tcc-cinematch.onrender.com/upload", {
+    const uploadRes = await fetch("https://tcc-cinematch.onrender.com/upload/avatar", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`
@@ -130,22 +130,14 @@ fotoInput.addEventListener("change", async () => {
 
     if (!uploadRes.ok) throw new Error("Erro ao subir imagem");
 
-    const { url } = await uploadRes.json();
+    const { foto } = await uploadRes.json();
 
-
-    await salvarBackend({ foto: url });
-
-
-    document.getElementById("fotoPerfil").src = url;
+    document.getElementById("fotoPerfil").src = foto;
 
   } catch (err) {
     alert("Erro ao subir imagem");
     console.error(err);
   }
-  window.editarFoto = function () {
-    document.getElementById("fotoInput").click();
-  };
-
 });
 
 /* =========================
@@ -155,6 +147,7 @@ function logout() {
   localStorage.removeItem("token");
   window.location.href = "index.html";
 }
+
 
 
 

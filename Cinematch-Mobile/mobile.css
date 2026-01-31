@@ -199,26 +199,37 @@ body.mobile {
 .config-bloco {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.config-bloco img.foto-config {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  border: 3px solid #A78BFA;
+  object-fit: cover;
+  align-self: flex-start;
 }
 
 .config-bloco button {
   width: 100%;
-  padding: 12px;
-  background: #A78BFA;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
+  padding: 10px;
   font-size: 14px;
-  font-weight: 600;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
 }
 
-.config-bloco button:last-child {
-  background: #ef4444;
+.config-bloco button:nth-of-type(1) {
+  background: #6366f1;
+  color: #fff;
 }
 
-.config-bloco button:active {
-  opacity: 0.85;
+
+.config-bloco button:nth-of-type(2) {
+  background: #334155;
+  color: #e5e7eb;
 }
 
 /* ======================
@@ -262,5 +273,6 @@ body.mobile {
   cursor: pointer;
   font-size: 20px;
 }
+
 
 

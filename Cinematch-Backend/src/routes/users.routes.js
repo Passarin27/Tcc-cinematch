@@ -88,5 +88,24 @@ router.post(
     res.json({ foto: fotoUrl });
   }
 );
+/* =========================
+   DELETE /users/me/avatar
+========================= */
+router.delete('/me/avatar', authMiddleware, async (req, res) => {
+  const fileName = `${req.user.id}.png`;
+
+  await supabase.storage
+    .from('Avatares')
+    .remove([fileName]);
+
+  await supabase
+    .from('usuarios')
+    .update({ foto: null })
+    .eq('id', req.user.id);
+
+  res.status(204).send();
+});
+
 
 module.exports = router;
+

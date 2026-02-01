@@ -219,6 +219,27 @@ button.remover-foto {
   color: #E5E7EB;
 }
 
+.config-bloco button {
+  width: auto;
+  flex: 1;
+}
+
+.config-bloco {
+  display: flex;
+  flex-direction: column;
+}
+
+.config-bloco > button,
+.config-bloco > .botoes-foto {
+  margin-top: 8px;
+}
+
+.config-bloco .botoes-foto {
+  display: flex;
+  gap: 8px;
+}
+
+
 /* ======================
    MODAL
 ====================== */
@@ -260,4 +281,5 @@ button.remover-foto {
   cursor: pointer;
   font-size: 20px;
 }
+
 

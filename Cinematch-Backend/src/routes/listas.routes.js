@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const supabase = require('../config/supabase');
-const authMiddleware = require('../controllers/auth.controller');
+const { authMiddleware } = require('../controllers/auth.controller');
 
 // criar lista
 router.post('/', authMiddleware, async (req, res) => {
@@ -129,5 +129,6 @@ router.delete('/:listaId/filmes/:filmeId', authMiddleware, async (req, res) => {
 
 
 module.exports = router;
+
 
 

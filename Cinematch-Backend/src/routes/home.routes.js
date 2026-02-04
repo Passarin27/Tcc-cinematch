@@ -18,28 +18,27 @@ router.get('/', authMiddleware, async (req, res) => {
 
     const { data: usuario, error } = await supabase
       .from('usuarios')
-      .select('generos_prediletos')
+      .select('preferences')
       .eq('id', userId)
       .single();
 
-    if (error || !usuario?.generos_prediletos?.length) {
+    if (error || !usuario?.preferences?.length) {
       return res.json([]);
     }
 
-    // Converte nomes dos gêneros em IDs do TMDB
-    const generosIds = usuario.generos_prediletos
+    const generosIds = usuario.preferences
       .map(g => MAPA_GENEROS_TMDB[g.toLowerCase()])
       .filter(Boolean);
 
     if (!generosIds.length) {
-      console.log('Nenhum gênero válido:', usuario.generos_prediletos);
+      console.log('Nenhum gênero válido:', usuario.preferences);
       return res.json([]);
     }
 
     const generos = generosIds.join(',');
     const page = req.query.page || 1;
 
-    const url = `https://api.themoviedb.org/3/discover/movie?api_key=${TMDB_API_KEY}&language=pt-BR&with_genres=${generos}&page=${page}`;
+    const url = `https://api.themoviedb.org/3/discover/movie?api_key=${1ed547b4243d008478f0754b4621dbe2}&language=pt-BR&with_genres=${generos}&page=${page}`;
 
     console.log('URL TMDB:', url);
 

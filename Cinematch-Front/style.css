@@ -239,3 +239,40 @@ body {
   cursor: pointer;
   color: #E5E7EB;
 }
+
+.label {
+  margin-top: 15px;
+  margin-bottom: 6px;
+  font-size: 14px;
+  color: #cbd5f5;
+  text-align: left;
+}
+
+.genres {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 15px;
+}
+
+.genre {
+  padding: 8px 14px;
+  border-radius: 20px;
+  border: 1px solid #334155;
+  background: #0f172a;
+  color: #e5e7eb;
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.2s ease;
+}
+
+.genre:hover {
+  background: #1e293b;
+}
+
+.genre.active {
+  background: #6366f1;
+  border-color: #6366f1;
+  color: #fff;
+}
+

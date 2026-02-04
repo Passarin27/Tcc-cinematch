@@ -13,7 +13,7 @@ const upload = multer({ storage: multer.memoryStorage() });
 router.get('/me', authMiddleware, async (req, res) => {
   const { data, error } = await supabase
     .from('usuarios')
-    .select('id, nome, email, foto')
+    .select('id, nome, email, foto, preferences')
     .eq('id', req.user.id)
     .single();
 
@@ -105,6 +105,7 @@ router.delete('/me/avatar', authMiddleware, async (req, res) => {
 
 
 module.exports = router;
+
 
 
 

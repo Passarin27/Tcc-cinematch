@@ -3,7 +3,7 @@ const router = express.Router();
 const supabase = require('../config/supabase');
 const { authMiddleware } = require('../controllers/auth.controller');
 
-const MAPA_GENEROS_TMDB = require('../utils/generosTMBD');
+const MAPA_GENEROS_TMDB = require('../utils/generosTMDB');
 
 const TMDB_API_KEY = process.env.TMDB_API_KEY;
 
@@ -75,3 +75,4 @@ router.get('/', authMiddleware, async (req, res) => {
 });
 
 module.exports = router;
+

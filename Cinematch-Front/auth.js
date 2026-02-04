@@ -1,5 +1,26 @@
 const API_URL = "https://tcc-cinematch.onrender.com";
 
+let selectedGenres = [];
+
+/* =========================
+   SELEÇÃO DE GENEROS
+========================= */
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll(".genre").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const genre = btn.textContent.trim();
+
+      if (selectedGenres.includes(genre)) {
+        selectedGenres = selectedGenres.filter(g => g !== genre);
+        btn.classList.remove("active");
+      } else {
+        selectedGenres.push(genre);
+        btn.classList.add("active");
+      }
+    });
+  });
+});
+
 /* =========================
    LOGIN
 ========================= */
@@ -9,9 +30,7 @@ async function login() {
 
   const res = await fetch(`${API_URL}/auth/login`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, senha })
   });
 
@@ -22,7 +41,6 @@ async function login() {
 
   const data = await res.json();
   localStorage.setItem("token", data.token);
-
   window.location.href = "home.html";
 }
 
@@ -34,18 +52,14 @@ async function registrar() {
   const email = document.getElementById("email").value;
   const senha = document.getElementById("senha").value;
 
-  const preferences = selectedGenres || [];
-
   const res = await fetch(`${API_URL}/auth/register`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       nome,
       email,
       senha,
-      preferences
+      preferences: selectedGenres
     })
   });
 
@@ -57,4 +71,3 @@ async function registrar() {
   alert("Cadastro realizado com sucesso");
   window.location.href = "index.html";
 }
-

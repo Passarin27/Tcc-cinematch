@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const supabase = require('../config/supabase');
 const { authMiddleware } = require('../controllers/auth.controller');
+
+
 const MAPA_GENEROS_TMDB = require('../utils/generosTMDB');
 
 const fetch = (...args) =>
@@ -9,11 +11,21 @@ const fetch = (...args) =>
 
 const TMDB_API_KEY = process.env.TMDB_API_KEY;
 
+if (!TMDB_API_KEY) {
+  console.error('❌ TMDB_API_KEY não definida nas variáveis de ambiente');
+}
+
 /* =========================
    HOME / RECOMENDAÇÕES
 ========================= */
 router.get('/', authMiddleware, async (req, res) => {
   try {
+    if (!TMDB_API_KEY) {
+      return res
+        .status(500)
+        .json({ error: 'Configuração inválida do servidor' });
+    }
+
     const userId = req.user.id;
 
     const { data: usuario, error } = await supabase
@@ -27,29 +39,27 @@ router.get('/', authMiddleware, async (req, res) => {
     }
 
     const generosIds = usuario.preferences
-      .map(g => MAPA_GENEROS_TMDB[g.toLowerCase()])
+      .map(g => MAPA_GENEROS_TMDB[g])
       .filter(Boolean);
 
     if (!generosIds.length) {
-      console.log('Nenhum gênero válido:', usuario.preferences);
+      console.log('⚠️ Gêneros não mapeados:', usuario.preferences);
       return res.json([]);
     }
 
     const generos = generosIds.join(',');
     const page = req.query.page || 1;
 
-    const url = `https://api.themoviedb.org/3/discover/movie?api_key=${1ed547b4243d008478f0754b4621dbe2}&language=pt-BR&with_genres=${generos}&page=${page}`;
-
-    console.log('URL TMDB:', url);
+    const url = `https://api.themoviedb.org/3/discover/movie?api_key=${TMDB_API_KEY}&language=pt-BR&with_genres=${generos}&page=${page}`;
 
     const response = await fetch(url);
     const dados = await response.json();
 
-    res.json(dados.results || []);
+    return res.json(dados.results || []);
 
   } catch (err) {
-    console.error('Erro recomendações:', err);
-    res.status(500).json({ error: 'Erro ao gerar recomendações' });
+    console.error('❌ Erro recomendações:', err);
+    return res.status(500).json({ error: 'Erro ao gerar recomendações' });
   }
 });
 

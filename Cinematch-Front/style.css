@@ -376,3 +376,59 @@ body {
 }
 
 
+/* ===== LOGIN ===== */
+
+
+.modal {
+  display: flex;
+}
+
+
+.modal-conteudo {
+  background: linear-gradient(180deg, #0f172a, #020617);
+  border-radius: 18px;
+  box-shadow: 0 30px 70px rgba(0,0,0,0.75);
+  animation: fadeIn 0.25s ease;
+}
+
+.modal-conteudo h2 {
+  text-align: center;
+  letter-spacing: 0.5px;
+}
+
+
+.modal input {
+  background: #020617;
+  border: 1px solid #334155;
+  color: #E5E7EB;
+}
+
+.modal input::placeholder {
+  color: #9CA3AF;
+}
+
+
+.modal button {
+  margin-top: 16px;
+}
+
+
+.modal-conteudo p {
+  margin-top: 22px;
+  line-height: 1.4;
+}
+
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+

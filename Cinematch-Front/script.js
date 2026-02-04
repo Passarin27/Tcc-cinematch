@@ -1,4 +1,3 @@
-const API_KEY = "1ed547b4243d008478f0754b4621dbe2";
 const IMG_URL = "https://image.tmdb.org/t/p/w300";
 
 /* =========================
@@ -51,7 +50,7 @@ async function buscarFavoritos() {
       headers: { Authorization: `Bearer ${token}` }
     });
 
-    if (!res.ok) return [];
+    if (!res.ok) return;
 
     const filmes = await res.json();
     favoritosCache = filmes.map(f => f.tmdb_id);
@@ -62,7 +61,7 @@ async function buscarFavoritos() {
 }
 
 /* =========================
-   FILMES (COM GARANTIA DE 10)
+   FILMES (RECOMENDAÇÕES)
 ========================= */
 async function carregarFilmes() {
   const container = document.getElementById("lista-filmes");
@@ -72,14 +71,18 @@ async function carregarFilmes() {
 
   while (exibidos < MIN_FILMES) {
     const res = await fetch(
-      `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=pt-BR&page=${page}`
+      `https://tcc-cinematch.onrender.com/home?page=${page}`,
+      {
+        headers: { Authorization: `Bearer ${token}` }
+      }
     );
 
-    const dados = await res.json();
+    if (!res.ok) break;
 
-    if (!dados.results || dados.results.length === 0) break;
+    const filmes = await res.json();
+    if (!filmes || filmes.length === 0) break;
 
-    for (const filme of dados.results) {
+    for (const filme of filmes) {
       if (exibidos >= MIN_FILMES) break;
       if (!filme.poster_path) continue;
       if (favoritosCache.includes(filme.id)) continue;

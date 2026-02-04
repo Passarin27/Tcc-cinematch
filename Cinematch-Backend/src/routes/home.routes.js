@@ -5,6 +5,9 @@ const { authMiddleware } = require('../controllers/auth.controller');
 
 const MAPA_GENEROS_TMDB = require('../utils/generosTMDB');
 
+const fetch = (...args) =>
+  import('node-fetch').then(({ default: fetch }) => fetch(...args));
+
 const TMDB_API_KEY = process.env.TMDB_API_KEY;
 
 if (!TMDB_API_KEY) {
@@ -28,16 +31,26 @@ router.get('/', authMiddleware, async (req, res) => {
       .eq('id', userId)
       .single();
 
-    if (error || !usuario?.preferences?.length) {
+    if (error || !usuario || !Array.isArray(usuario.preferences) || !usuario.preferences.length) {
       return res.json([]);
     }
 
+    const normalizarGenero = (g) =>
+      g
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase()
+        .replace(/\s+/g, '_');
+
     const generosIds = usuario.preferences
-      .map(g => MAPA_GENEROS_TMDB[g])
+      .map(g => MAPA_GENEROS_TMDB[normalizarGenero(g)])
       .filter(Boolean);
 
+    console.log('Preferences:', usuario.preferences);
+    console.log('IDs TMDB:', generosIds);
+
     if (!generosIds.length) {
-      console.log('⚠️ Gêneros não mapeados:', usuario.preferences);
+      console.log('⚠️ Nenhum gênero válido encontrado');
       return res.json([]);
     }
 

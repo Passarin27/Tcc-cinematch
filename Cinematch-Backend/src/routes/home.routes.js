@@ -3,11 +3,7 @@ const router = express.Router();
 const supabase = require('../config/supabase');
 const { authMiddleware } = require('../controllers/auth.controller');
 
-
-const MAPA_GENEROS_TMDB = require('../utils/generosTMDB');
-
-const fetch = (...args) =>
-  import('node-fetch').then(({ default: fetch }) => fetch(...args));
+const MAPA_GENEROS_TMDB = require('../utils/generosTMBD');
 
 const TMDB_API_KEY = process.env.TMDB_API_KEY;
 
@@ -51,7 +47,6 @@ router.get('/', authMiddleware, async (req, res) => {
     console.log('IDs TMDB:', generosIds);
 
     if (!generosIds.length) {
-      console.log('⚠️ Nenhum gênero válido encontrado');
       return res.json([]);
     }
 
@@ -63,6 +58,12 @@ router.get('/', authMiddleware, async (req, res) => {
     console.log('TMDB URL:', url);
 
     const response = await fetch(url);
+
+    if (!response.ok) {
+      console.error('Erro TMDB:', response.status);
+      return res.json([]);
+    }
+
     const dados = await response.json();
 
     return res.json(dados.results || []);

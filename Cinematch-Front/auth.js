@@ -34,12 +34,19 @@ async function registrar() {
   const email = document.getElementById("email").value;
   const senha = document.getElementById("senha").value;
 
+  const preferences = selectedGenres || [];
+
   const res = await fetch(`${API_URL}/auth/register`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({ nome, email, senha })
+    body: JSON.stringify({
+      nome,
+      email,
+      senha,
+      preferences
+    })
   });
 
   if (!res.ok) {
@@ -50,3 +57,4 @@ async function registrar() {
   alert("Cadastro realizado com sucesso");
   window.location.href = "index.html";
 }
+

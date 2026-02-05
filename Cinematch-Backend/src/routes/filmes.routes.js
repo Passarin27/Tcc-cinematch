@@ -3,9 +3,6 @@ const router = express.Router();
 const supabase = require('../config/supabase');
 const { authMiddleware } = require('../controllers/auth.controller');
 
-// Node < 18 precisa disso
-const fetch = require('node-fetch');
-
 /* =========================
    FUNÇÃO AUXILIAR – LISTAS
 ========================= */
@@ -172,3 +169,4 @@ router.post('/ja-assistidos', authMiddleware, async (req, res) => {
 });
 
 module.exports = router;
+

@@ -623,6 +623,89 @@ select {
   }
 }
 
+/* =========================
+   LISTAS
+========================= */
+
+.listas-container {
+  padding: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.listas-container h2 {
+  font-size: 28px;
+  margin-bottom: 30px;
+  color: #fff;
+  letter-spacing: 1px;
+}
+
+/* GRID DAS LISTAS */
+.listas-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+/* CARD DA LISTA */
+.lista-card {
+  background: #111;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+}
+
+.lista-header h3 {
+  font-size: 20px;
+  margin-bottom: 15px;
+  color: #f5c518; /* amarelinho estilo IMDb */
+  letter-spacing: 0.5px;
+}
+
+/* FILMES DA LISTA */
+.lista-filmes {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 16px;
+}
+
+/* CARD DO FILME */
+.filme-card {
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  text-align: center;
+}
+
+.filme-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.6);
+}
+
+/* POSTER */
+.filme-card img {
+  width: 100%;
+  max-height: 210px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 8px;
+}
+
+/* TÍTULO DO FILME */
+.filme-card span {
+  display: block;
+  font-size: 14px;
+  color: #eee;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+/* LISTA VAZIA */
+.lista-vazia {
+  color: #aaa;
+  font-style: italic;
+}
+
+
 
 
 

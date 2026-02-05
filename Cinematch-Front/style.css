@@ -460,6 +460,19 @@ body {
   color: #052e16;
 }
 
+.poster-container {
+  position: relative;
+  display: inline-block;
+}
+
+.poster-container img {
+  width: 100%;
+  border-radius: 12px;
+}
+
+
+
+
 
 
 

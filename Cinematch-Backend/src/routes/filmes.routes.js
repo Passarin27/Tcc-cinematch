@@ -28,7 +28,7 @@ async function obterOuCriarLista(nome, usuario_id) {
 }
 
 /* =========================
-   STATUS DO FILME (CORRIGIDO)
+   STATUS DO FILME
 ========================= */
 router.get('/status/:tmdbId', authMiddleware, async (req, res) => {
   const { tmdbId } = req.params;
@@ -185,4 +185,3 @@ router.delete('/ja-assistidos/:tmdbId', authMiddleware, async (req, res) => {
 });
 
 module.exports = router;
-

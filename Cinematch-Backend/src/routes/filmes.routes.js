@@ -46,12 +46,7 @@ router.get('/status/:tmdbId', authMiddleware, async (req, res) => {
 
   const { data: listas } = await supabase
     .from('lista_filmes')
-    .select(`
-      listas!inner (
-        nome,
-        usuario_id
-      )
-    `)
+    .select(`listas!inner(nome, usuario_id)`)
     .eq('filme_id', filme.id)
     .eq('listas.usuario_id', userId);
 
@@ -64,10 +59,13 @@ router.get('/status/:tmdbId', authMiddleware, async (req, res) => {
 });
 
 /* =========================
-   SALVAR FILME (SE NÃO EXISTIR)
+   ASSISTIR DEPOIS
 ========================= */
-router.post('/', authMiddleware, async (req, res) => {
+router.post('/assistir-depois', authMiddleware, async (req, res) => {
   const { tmdb_id, titulo, poster } = req.body;
+  const userId = req.user.id;
+
+  const lista = await obterOuCriarLista('Assistir depois', userId);
 
   let { data: filme } = await supabase
     .from('filmes_salvos')
@@ -81,34 +79,21 @@ router.post('/', authMiddleware, async (req, res) => {
       .insert([{ tmdb_id, titulo, poster }])
       .select()
       .single();
-
     filme = data;
   }
 
-  res.json(filme);
-});
-
-/* =========================
-   ASSISTIR DEPOIS
-========================= */
-router.post('/assistir-depois', authMiddleware, async (req, res) => {
-  const { tmdb_id, titulo, poster } = req.body;
-  const userId = req.user.id;
-
-  const lista = await obterOuCriarLista('Assistir depois', userId);
-
-  const { data: filme } = await supabase
-    .from('filmes_salvos')
-    .upsert([{ tmdb_id, titulo, poster }])
-    .select()
+  const { data: existe } = await supabase
+    .from('lista_filmes')
+    .select('id')
+    .eq('lista_id', lista.id)
+    .eq('filme_id', filme.id)
     .single();
 
-  await supabase
-    .from('lista_filmes')
-    .upsert(
-      [{ lista_id: lista.id, filme_id: filme.id }],
-      { onConflict: 'lista_id,filme_id' }
-    );
+  if (!existe) {
+    await supabase
+      .from('lista_filmes')
+      .insert([{ lista_id: lista.id, filme_id: filme.id }]);
+  }
 
   res.status(201).send();
 });
@@ -145,18 +130,33 @@ router.post('/ja-assistidos', authMiddleware, async (req, res) => {
 
   const lista = await obterOuCriarLista('Já assistidos', userId);
 
-  const { data: filme } = await supabase
+  let { data: filme } = await supabase
     .from('filmes_salvos')
-    .upsert([{ tmdb_id, titulo, poster }])
-    .select()
+    .select('*')
+    .eq('tmdb_id', tmdb_id)
     .single();
 
-  await supabase
+  if (!filme) {
+    const { data } = await supabase
+      .from('filmes_salvos')
+      .insert([{ tmdb_id, titulo, poster }])
+      .select()
+      .single();
+    filme = data;
+  }
+
+  const { data: existe } = await supabase
     .from('lista_filmes')
-    .upsert(
-      [{ lista_id: lista.id, filme_id: filme.id }],
-      { onConflict: 'lista_id,filme_id' }
-    );
+    .select('id')
+    .eq('lista_id', lista.id)
+    .eq('filme_id', filme.id)
+    .single();
+
+  if (!existe) {
+    await supabase
+      .from('lista_filmes')
+      .insert([{ lista_id: lista.id, filme_id: filme.id }]);
+  }
 
   res.status(201).send();
 });

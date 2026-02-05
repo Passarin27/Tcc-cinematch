@@ -6,26 +6,19 @@ const jwt = require('jsonwebtoken');
    AUTH MIDDLEWARE (JWT)
 ========================= */
 const authMiddleware = (req, res, next) => {
-  console.log('🔐 Auth middleware executado');
-
   const authHeader = req.headers.authorization;
-  console.log('Authorization header:', authHeader);
 
   if (!authHeader) {
     return res.status(401).json({ error: 'Token não informado' });
   }
 
   const [, token] = authHeader.split(' ');
-  console.log('Token recebido:', token);
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    console.log('Token decodificado:', decoded);
-
     req.user = decoded;
     return next();
   } catch (err) {
-    console.log('❌ Erro ao validar token:', err.message);
     return res.status(401).json({ error: 'Token inválido' });
   }
 };
@@ -46,10 +39,10 @@ const register = async (req, res) => {
 
   try {
     email = email.toLowerCase().trim();
-
     const senhaHash = await bcrypt.hash(senha, 10);
 
-    const { data, error } = await supabase
+    /* ===== CRIA USUÁRIO ===== */
+    const { data: usuario, error } = await supabase
       .from('usuarios')
       .insert([{
         nome,
@@ -64,9 +57,23 @@ const register = async (req, res) => {
       return res.status(400).json({ error: error.message });
     }
 
+    /* ===== CRIA LISTAS PADRÃO ===== */
+    const listasPadrao = [
+      { nome: 'Assistir depois', usuario_id: usuario.id },
+      { nome: 'Já assistidos', usuario_id: usuario.id }
+    ];
+
+    const { error: erroListas } = await supabase
+      .from('listas')
+      .insert(listasPadrao);
+
+    if (erroListas) {
+      console.error('Erro ao criar listas padrão:', erroListas.message);
+    }
+
     res.status(201).json({
       message: 'Usuário cadastrado com sucesso',
-      user: data
+      user: usuario
     });
 
   } catch (err) {
@@ -120,4 +127,3 @@ module.exports = {
   register,
   login
 };
-

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Configurações</title>
+  <link rel="icon" href="favicon.ico">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <div id="conteudo" class="config-container">
+    <h2>Configurações da Conta</h2>
+
+    <!-- PERFIL -->
+    <div class="config-card perfil-card">
+      <img id="fotoPerfil" class="foto-config" src="./avatar.png">
+
+      <div class="perfil-acoes">
+        <button class="btn-primario" onclick="editarFoto()">Alterar foto</button>
+        <button class="btn-secundario" onclick="removerFoto()">Remover</button>
+        <input type="file" id="fotoInput" accept="image/*" hidden>
+      </div>
+    </div>
+
+    <!-- DADOS -->
+    <div class="config-card">
+      <div class="linha-config">
+        <span>Nome</span>
+        <strong id="nomeAtual"></strong>
+        <button onclick="editarNome()">Editar</button>
+        <input type="text" id="nomeInput" hidden>
+      </div>
+
+      <div class="linha-config">
+        <span>E-mail</span>
+        <strong id="emailAtual"></strong>
+        <button onclick="editarEmail()">Editar</button>
+        <input type="email" id="emailInput" hidden>
+      </div>
+
+      <div class="linha-config">
+        <span>Senha</span>
+        <strong>********</strong>
+        <button onclick="editarSenha()">Alterar</button>
+        <input type="password" id="senhaInput" hidden>
+      </div>
+
+      <!-- GÊNEROS FAVORITOS -->
+      <div class="linha-config">
+        <span>Gêneros favoritos</span>
+        <strong id="generosAtuais">Não informado</strong>
+        <button onclick="editarPreferencias()">Editar gêneros favoritos</button>
+
+        <div class="genre-select" id="generoContainer" hidden>
+          <div class="selected-genres" id="selectedGenres"></div>
+
+          <input type="text" id="genreInput" placeholder="Clique para escolher" readonly />
+
+          <div class="genre-dropdown" id="genreDropdown"></div>
+        </div>
+      </div>
+
+      <!-- AÇÕES -->
+      <div class="config-card acoes">
+        <button class="btn-danger" onclick="logout()">Sair da conta</button>
+        <a href="home.html" class="voltar">Voltar</a>
+      </div>
+    </div>
+
+    <script src="configuracoes.js"></script>
+</body>
+
+</html>

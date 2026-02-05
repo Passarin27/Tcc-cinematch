@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Cadastro - CineMatch</title>
+  <link rel="icon" href="favicon.ico">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <div class="modal" style="display:flex">
+    <div class="modal-conteudo">
+      <h2>Criar Conta</h2>
+
+      <input type="text" id="nome" placeholder="Nome">
+      <input type="email" id="email" placeholder="E-mail">
+      <input type="password" id="senha" placeholder="Senha"
+        
+<p class="label">Escolha seus gêneros favoritos</p>
+
+<div class="genre-select">
+  <div class="selected-genres" id="selectedGenres"></div>
+
+  <input
+    type="text"
+    id="genreInput"
+    placeholder="Clique para escolher"
+    readonly
+  />
+
+  <div class="genre-dropdown" id="genreDropdown"></div>
+</div>
+
+      
+      <button onclick="registrar()">Cadastrar</button>
+
+      <p style="margin-top:10px">
+        Já tem conta?
+        <a href="index.html">Entrar</a>
+      </p>
+    </div>
+  </div>
+
+
+  <script src="auth.js"></script>
+
+</body>
+
+</html>
+
+
+

@@ -1,5 +1,6 @@
 const params = new URLSearchParams(window.location.search);
 const tmdbId = params.get("id");
+const from = params.get("from");
 
 const token = localStorage.getItem("token");
 if (!token || !tmdbId) {
@@ -9,6 +10,7 @@ if (!token || !tmdbId) {
 const API_KEY = "1ed547b4243d008478f0754b4621dbe2";
 const IMG_URL = "https://image.tmdb.org/t/p/w500";
 
+const generos = document.getElementById("generos");
 const poster = document.getElementById("poster");
 const titulo = document.getElementById("titulo");
 const sinopse = document.getElementById("sinopse");
@@ -17,6 +19,7 @@ const atores = document.getElementById("atores");
 
 const btnAssistirDepois = document.getElementById("btn-assistir-depois");
 const btnJaAssistido = document.getElementById("btn-ja-assistido");
+const btnVoltar = document.getElementById("btn-voltar");
 
 let filmeAtual = null;
 
@@ -40,6 +43,11 @@ async function carregarDetalhes() {
 
     titulo.textContent = filme.title || "Título não informado";
     sinopse.textContent = filme.overview || "Sem sinopse disponível";
+
+    // 🎬 GÊNEROS
+    generos.textContent = filme.genres?.length
+      ? filme.genres.map(g => g.name).join(", ")
+      : "Não informado";
 
     const crew = filme.credits?.crew || [];
     const cast = filme.credits?.cast || [];
@@ -73,6 +81,7 @@ async function carregarStatus() {
 
     if (status.assistirDepois) btnAssistirDepois.classList.add("ativo");
     if (status.jaAssistido) btnJaAssistido.classList.add("ativo");
+
   } catch (err) {
     console.error("Erro status:", err);
   }
@@ -141,6 +150,17 @@ btnJaAssistido.addEventListener("click", async () => {
 
   btnJaAssistido.classList.add("ativo");
   btnAssistirDepois.classList.remove("ativo");
+});
+
+/* =========================
+   VOLTAR
+========================= */
+btnVoltar?.addEventListener("click", () => {
+  if (from === "listas") {
+    window.location.href = "listas.html";
+  } else {
+    window.location.href = "home.html";
+  }
 });
 
 /* =========================

@@ -176,6 +176,142 @@ document.addEventListener("click", e => {
   }
 });
 
+function editarFoto() {
+  document.getElementById("fotoInput").click();
+}
+
+document.getElementById("fotoInput").addEventListener("change", async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const formData = new FormData();
+  formData.append("avatar", file); // nome esperado pelo backend
+
+  try {
+    const res = await fetch(
+      "https://tcc-cinematch.onrender.com/users/me/avatar",
+      {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
+        body: formData
+      }
+    );
+
+    if (!res.ok) {
+      showToast("Erro ao atualizar avatar", "erro");
+      return;
+    }
+
+    const data = await res.json();
+
+    // atualiza imagem na tela
+    document.getElementById("fotoPerfil").src = data.avatar;
+
+    showToast("Avatar atualizado com sucesso", "sucesso");
+  } catch (err) {
+    showToast("Erro de conexão", "erro");
+  }
+});
+
+function removerFoto() {
+  document.getElementById("fotoPerfil").src = "./avatar.png";
+  showToast("Avatar removido", "info");
+}
+
+
+function editarNome() {
+  const input = document.getElementById("nomeInput");
+  input.hidden = false;
+  input.focus();
+
+  input.onblur = async () => {
+    if (!input.value.trim()) return;
+
+    const res = await fetch("https://tcc-cinematch.onrender.com/users/me", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify({ nome: input.value })
+    });
+
+    if (res.ok) {
+      document.getElementById("nomeAtual").textContent = input.value;
+      showToast("Nome atualizado", "sucesso");
+    } else {
+      showToast("Erro ao atualizar nome", "erro");
+    }
+
+    input.hidden = true;
+    input.value = "";
+  };
+}
+
+
+function editarEmail() {
+  const input = document.getElementById("emailInput");
+  input.hidden = false;
+  input.focus();
+
+  input.onblur = async () => {
+    if (!input.value.trim()) return;
+
+    const res = await fetch("https://tcc-cinematch.onrender.com/users/me", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify({ email: input.value })
+    });
+
+    if (res.ok) {
+      document.getElementById("emailAtual").textContent = input.value;
+      showToast("E-mail atualizado", "sucesso");
+    } else {
+      showToast("Erro ao atualizar e-mail", "erro");
+    }
+
+    input.hidden = true;
+    input.value = "";
+  };
+}
+
+function editarSenha() {
+  const input = document.getElementById("senhaInput");
+  input.hidden = false;
+  input.focus();
+
+  input.onblur = async () => {
+    if (input.value.length < 6) {
+      showToast("Senha muito curta", "erro");
+      return;
+    }
+
+    const res = await fetch("https://tcc-cinematch.onrender.com/users/me/senha", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify({ senha: input.value })
+    });
+
+    if (res.ok) {
+      showToast("Senha atualizada", "sucesso");
+    } else {
+      showToast("Erro ao atualizar senha", "erro");
+    }
+
+    input.hidden = true;
+    input.value = "";
+  };
+}
+
+
 /* =========================
    LOGOUT
 ========================= */
@@ -196,3 +332,4 @@ function showToast(msg, tipo = "info") {
 
   setTimeout(() => toast.remove(), 3000);
 }
+

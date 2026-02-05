@@ -28,7 +28,7 @@ async function obterOuCriarLista(nome, usuario_id) {
 }
 
 /* =========================
-   STATUS DO FILME
+   STATUS DO FILME (CORRIGIDO)
 ========================= */
 router.get('/status/:tmdbId', authMiddleware, async (req, res) => {
   const { tmdbId } = req.params;
@@ -44,12 +44,17 @@ router.get('/status/:tmdbId', authMiddleware, async (req, res) => {
     return res.json({ assistirDepois: false, jaAssistido: false });
   }
 
-  const { data: listas } = await supabase
+  const { data: listas, error } = await supabase
     .from('lista_filmes')
     .select(`
-      listas ( nome )
+      listas!inner ( nome, usuario_id )
     `)
-    .eq('filme_id', filme.id);
+    .eq('filme_id', filme.id)
+    .eq('listas.usuario_id', userId);
+
+  if (error) {
+    return res.status(400).json({ error: error.message });
+  }
 
   const nomes = listas.map(l => l.listas.nome);
 
@@ -101,7 +106,10 @@ router.post('/assistir-depois', authMiddleware, async (req, res) => {
 
   await supabase
     .from('lista_filmes')
-    .insert([{ lista_id: lista.id, filme_id: filme.id }]);
+    .upsert(
+      [{ lista_id: lista.id, filme_id: filme.id }],
+      { onConflict: 'lista_id,filme_id' }
+    );
 
   res.status(201).send();
 });
@@ -130,7 +138,7 @@ router.delete('/assistir-depois/:tmdbId', authMiddleware, async (req, res) => {
 });
 
 /* =========================
-   JÁ ASSISTIDO
+   JÁ ASSISTIDOS
 ========================= */
 router.post('/ja-assistidos', authMiddleware, async (req, res) => {
   const { tmdb_id, titulo, poster } = req.body;
@@ -146,7 +154,10 @@ router.post('/ja-assistidos', authMiddleware, async (req, res) => {
 
   await supabase
     .from('lista_filmes')
-    .insert([{ lista_id: lista.id, filme_id: filme.id }]);
+    .upsert(
+      [{ lista_id: lista.id, filme_id: filme.id }],
+      { onConflict: 'lista_id,filme_id' }
+    );
 
   res.status(201).send();
 });

@@ -28,42 +28,6 @@ async function obterOuCriarLista(nome, usuario_id) {
 }
 
 /* =========================
-   FUNÇÃO AUXILIAR – TMDB
-========================= */
-async function buscarFilmeTMDB(tmdb_id) {
-  const res = await fetch(
-    `https://api.themoviedb.org/3/movie/${tmdb_id}?language=pt-BR&append_to_response=credits`,
-    {
-      headers: {
-        Authorization: `Bearer ${process.env.TMDB_TOKEN}`,
-        'Content-Type': 'application/json'
-      }
-    }
-  );
-
-  if (!res.ok) {
-    const text = await res.text();
-    console.error('TMDB erro:', text);
-    throw new Error('Erro ao buscar filme no TMDB');
-  }
-
-  return await res.json();
-}
-
-/* =========================
-   DETALHES DO FILME
-========================= */
-router.get('/detalhes/:tmdbId', authMiddleware, async (req, res) => {
-  try {
-    const filme = await buscarFilmeTMDB(req.params.tmdbId);
-    res.json(filme);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Erro ao buscar detalhes' });
-  }
-});
-
-/* =========================
    STATUS DO FILME
 ========================= */
 router.get('/status/:tmdbId', authMiddleware, async (req, res) => {
@@ -102,18 +66,12 @@ router.post('/assistir-depois', authMiddleware, async (req, res) => {
     const { tmdb_id } = req.body;
     const userId = req.user.id;
 
-    const filmeTMDB = await buscarFilmeTMDB(tmdb_id);
-
     const listaAssistirDepois = await obterOuCriarLista('Assistir depois', userId);
     const listaJaAssistidos = await obterOuCriarLista('Já assistidos', userId);
 
     const { data: filme } = await supabase
       .from('filmes_salvos')
-      .upsert([{
-        tmdb_id,
-        titulo: filmeTMDB.title,
-        poster: filmeTMDB.poster_path
-      }])
+      .upsert([{ tmdb_id }])
       .select()
       .single();
 
@@ -130,10 +88,10 @@ router.post('/assistir-depois', authMiddleware, async (req, res) => {
         { onConflict: 'lista_id,filme_id' }
       );
 
-    res.status(201).send();
+    res.sendStatus(201);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: 'Erro ao salvar filme' });
+    res.sendStatus(500);
   }
 });
 
@@ -145,18 +103,12 @@ router.post('/ja-assistidos', authMiddleware, async (req, res) => {
     const { tmdb_id } = req.body;
     const userId = req.user.id;
 
-    const filmeTMDB = await buscarFilmeTMDB(tmdb_id);
-
     const listaJaAssistidos = await obterOuCriarLista('Já assistidos', userId);
     const listaAssistirDepois = await obterOuCriarLista('Assistir depois', userId);
 
     const { data: filme } = await supabase
       .from('filmes_salvos')
-      .upsert([{
-        tmdb_id,
-        titulo: filmeTMDB.title,
-        poster: filmeTMDB.poster_path
-      }])
+      .upsert([{ tmdb_id }])
       .select()
       .single();
 
@@ -173,12 +125,11 @@ router.post('/ja-assistidos', authMiddleware, async (req, res) => {
         { onConflict: 'lista_id,filme_id' }
       );
 
-    res.status(201).send();
+    res.sendStatus(201);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: 'Erro ao salvar filme' });
+    res.sendStatus(500);
   }
 });
 
 module.exports = router;
-

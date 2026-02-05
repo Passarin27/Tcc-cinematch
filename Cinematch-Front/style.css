@@ -438,7 +438,7 @@ body {
   box-shadow: 0 8px 25px rgba(167,139,250,0.45);
 }
 
-/* posição */
+/* posições */
 .badge-esquerda {
   left: 12px;
 }
@@ -447,19 +447,20 @@ body {
   right: 12px;
 }
 
-/* estados ativos */
+/* estado ativo padrão (Assistir depois) */
 .badge.ativo {
   background: linear-gradient(135deg, #6366f1, #8b5cf6);
   color: #020617;
   border-color: transparent;
 }
 
-/* feedback diferente por ação */
+/* Já assistido */
 #btn-ja-assistido.ativo {
   background: linear-gradient(135deg, #22c55e, #16a34a);
   color: #052e16;
 }
 
+/* container do poster */
 .poster-container {
   position: relative;
   display: inline-block;
@@ -469,6 +470,7 @@ body {
   width: 100%;
   border-radius: 12px;
 }
+
 
 
 

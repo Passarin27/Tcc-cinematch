@@ -53,10 +53,13 @@ router.post('/:listaId/filmes', authMiddleware, async (req, res) => {
 
   const { data, error } = await supabase
     .from('lista_filmes')
-    .insert([{
-      lista_id: listaId,
-      filme_id
-    }])
+    .upsert(
+      [{
+        lista_id: listaId,
+        filme_id
+      }],
+      { onConflict: 'lista_id,filme_id' }
+    )
     .select()
     .single();
 
@@ -67,9 +70,10 @@ router.post('/:listaId/filmes', authMiddleware, async (req, res) => {
   res.status(201).json(data);
 });
 
-// listar filmes de uma lista
+// listar filmes de uma lista (CORRIGIDO RLS)
 router.get('/:listaId/filmes', authMiddleware, async (req, res) => {
   const { listaId } = req.params;
+  const userId = req.user.id;
 
   const { data, error } = await supabase
     .from('lista_filmes')
@@ -79,17 +83,19 @@ router.get('/:listaId/filmes', authMiddleware, async (req, res) => {
         tmdb_id,
         titulo,
         poster
+      ),
+      listas!inner (
+        usuario_id
       )
     `)
-    .eq('lista_id', listaId);
+    .eq('lista_id', listaId)
+    .eq('listas.usuario_id', userId);
 
   if (error) {
     return res.status(400).json({ error: error.message });
   }
 
-  // extrai só os filmes
   const filmes = data.map(item => item.filmes_salvos);
-
   res.json(filmes);
 });
 
@@ -127,8 +133,4 @@ router.delete('/:listaId/filmes/:filmeId', authMiddleware, async (req, res) => {
   res.status(204).send();
 });
 
-
 module.exports = router;
-
-
-

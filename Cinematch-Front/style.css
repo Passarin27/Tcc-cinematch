@@ -466,15 +466,18 @@ body {
   flex-shrink: 0;     /* impede encolher */
 }
 
-.poster-container img {
-  width: 100%;
-  border-radius: 12px;
+.poster-container {
+  position: relative;
+  display: inline-block; 
 }
 
-.detalhes-container img {
+.poster-container img {
+  display: block;        
   width: 280px;
   border-radius: 12px;
 }
+
+
 
 
 

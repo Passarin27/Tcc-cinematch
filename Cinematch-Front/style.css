@@ -658,9 +658,10 @@ select {
 .lista-header h3 {
   font-size: 20px;
   margin-bottom: 15px;
-  color: #f5c518; /* amarelinho estilo IMDb */
+  color: #C4B5FD; 
   letter-spacing: 0.5px;
 }
+
 
 /* FILMES DA LISTA */
 .lista-filmes {
@@ -704,6 +705,7 @@ select {
   color: #aaa;
   font-style: italic;
 }
+
 
 
 

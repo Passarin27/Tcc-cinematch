@@ -46,7 +46,7 @@ router.get('/status/:tmdbId', authMiddleware, async (req, res) => {
 
   const { data: listas } = await supabase
     .from('lista_filmes')
-    .select(`listas!inner(nome, usuario_id)`)
+    .select(`listas!inner ( nome, usuario_id )`)
     .eq('filme_id', filme.id)
     .eq('listas.usuario_id', userId);
 
@@ -65,60 +65,31 @@ router.post('/assistir-depois', authMiddleware, async (req, res) => {
   const { tmdb_id, titulo, poster } = req.body;
   const userId = req.user.id;
 
-  const lista = await obterOuCriarLista('Assistir depois', userId);
-
-  let { data: filme } = await supabase
-    .from('filmes_salvos')
-    .select('*')
-    .eq('tmdb_id', tmdb_id)
-    .single();
-
-  if (!filme) {
-    const { data } = await supabase
-      .from('filmes_salvos')
-      .insert([{ tmdb_id, titulo, poster }])
-      .select()
-      .single();
-    filme = data;
-  }
-
-  const { data: existe } = await supabase
-    .from('lista_filmes')
-    .select('id')
-    .eq('lista_id', lista.id)
-    .eq('filme_id', filme.id)
-    .single();
-
-  if (!existe) {
-    await supabase
-      .from('lista_filmes')
-      .insert([{ lista_id: lista.id, filme_id: filme.id }]);
-  }
-
-  res.status(201).send();
-});
-
-router.delete('/assistir-depois/:tmdbId', authMiddleware, async (req, res) => {
-  const { tmdbId } = req.params;
-  const userId = req.user.id;
-
-  const lista = await obterOuCriarLista('Assistir depois', userId);
+  const listaAssistirDepois = await obterOuCriarLista('Assistir depois', userId);
+  const listaJaAssistidos = await obterOuCriarLista('Já assistidos', userId);
 
   const { data: filme } = await supabase
     .from('filmes_salvos')
-    .select('id')
-    .eq('tmdb_id', tmdbId)
+    .upsert([{ tmdb_id, titulo, poster }])
+    .select()
     .single();
 
-  if (filme) {
-    await supabase
-      .from('lista_filmes')
-      .delete()
-      .eq('lista_id', lista.id)
-      .eq('filme_id', filme.id);
-  }
+  // ❌ remove de "Já assistidos"
+  await supabase
+    .from('lista_filmes')
+    .delete()
+    .eq('lista_id', listaJaAssistidos.id)
+    .eq('filme_id', filme.id);
 
-  res.status(204).send();
+  // ✅ adiciona em "Assistir depois"
+  await supabase
+    .from('lista_filmes')
+    .upsert(
+      [{ lista_id: listaAssistirDepois.id, filme_id: filme.id }],
+      { onConflict: 'lista_id,filme_id' }
+    );
+
+  res.status(201).send();
 });
 
 /* =========================
@@ -128,60 +99,31 @@ router.post('/ja-assistidos', authMiddleware, async (req, res) => {
   const { tmdb_id, titulo, poster } = req.body;
   const userId = req.user.id;
 
-  const lista = await obterOuCriarLista('Já assistidos', userId);
-
-  let { data: filme } = await supabase
-    .from('filmes_salvos')
-    .select('*')
-    .eq('tmdb_id', tmdb_id)
-    .single();
-
-  if (!filme) {
-    const { data } = await supabase
-      .from('filmes_salvos')
-      .insert([{ tmdb_id, titulo, poster }])
-      .select()
-      .single();
-    filme = data;
-  }
-
-  const { data: existe } = await supabase
-    .from('lista_filmes')
-    .select('id')
-    .eq('lista_id', lista.id)
-    .eq('filme_id', filme.id)
-    .single();
-
-  if (!existe) {
-    await supabase
-      .from('lista_filmes')
-      .insert([{ lista_id: lista.id, filme_id: filme.id }]);
-  }
-
-  res.status(201).send();
-});
-
-router.delete('/ja-assistidos/:tmdbId', authMiddleware, async (req, res) => {
-  const { tmdbId } = req.params;
-  const userId = req.user.id;
-
-  const lista = await obterOuCriarLista('Já assistidos', userId);
+  const listaJaAssistidos = await obterOuCriarLista('Já assistidos', userId);
+  const listaAssistirDepois = await obterOuCriarLista('Assistir depois', userId);
 
   const { data: filme } = await supabase
     .from('filmes_salvos')
-    .select('id')
-    .eq('tmdb_id', tmdbId)
+    .upsert([{ tmdb_id, titulo, poster }])
+    .select()
     .single();
 
-  if (filme) {
-    await supabase
-      .from('lista_filmes')
-      .delete()
-      .eq('lista_id', lista.id)
-      .eq('filme_id', filme.id);
-  }
+  // ❌ remove de "Assistir depois"
+  await supabase
+    .from('lista_filmes')
+    .delete()
+    .eq('lista_id', listaAssistirDepois.id)
+    .eq('filme_id', filme.id);
 
-  res.status(204).send();
+  // ✅ adiciona em "Já assistidos"
+  await supabase
+    .from('lista_filmes')
+    .upsert(
+      [{ lista_id: listaJaAssistidos.id, filme_id: filme.id }],
+      { onConflict: 'lista_id,filme_id' }
+    );
+
+  res.status(201).send();
 });
 
 module.exports = router;
